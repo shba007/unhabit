@@ -1,67 +1,76 @@
 {
-  "name": "habit",
-  "version": "5.2.10",
-  "description": "A minimalistic habit tracker application to track and manage your daily habits with ease.",
-  "author": {
-    "name": "Sefa Bulak",
-    "url": "https://github.com/zackha"
-  },
+  "name": "unhabit",
+  "version": "0.0.0",
+  "description": "Minimalistic habit tracker application to track and manage your daily habits with ease.",
+  "author": "Shirsendu Bairagi <shirsendu2001@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/zackha/habit",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zackha/habit.git"
+    "url": "https://github.com/shba007/unhabit"
   },
-  "keywords": [
-    "habit tracker",
-    "daily habits",
-    "task manager",
-    "vue 3",
-    "nuxt",
-    "drizzle orm",
-    "sqlite",
-    "confetti animation",
-    "tailwindcss",
-    "markdown support",
-    "typescript",
-    "habit tracking app",
-    "nuxthub",
-    "todo"
-  ],
+  "type": "module",
+  "private": true,
+  "volta": {
+    "node": "22.13.1"
+  },
+  "engines": {
+    "node": "^20.15.0 || ^22.11.0",
+    "pnpm": "^9.15.0"
+  },
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "preview": "nuxt preview",
+    "prepare": "husky || true",
     "postinstall": "nuxt prepare",
+    "dev": "nuxt dev",
+    "detect": "gitleaks git --verbose",
+    "lint": "eslint . --fix",
+    "format": "prettier . --write",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "start": "node --env-file=.env.prod .output/server/index.mjs",
+    "clean": "nuxt cleanup",
     "db:generate": "drizzle-kit generate",
-    "deploy": "bumpp && nuxthub deploy"
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "docker:build": "docker build --build-arg TAG=dev -t unhabit:dev .",
+    "docker:start": "docker run --detach --name unhabit-dev --env-file .env.prod -p 4203:3000 unhabit:dev",
+    "tunnel": "untun tunnel --port 4203 http://localhost:4203"
   },
   "dependencies": {
-    "@nuxt/ui": "2.21.0",
-    "@nuxthub/core": "0.8.11",
+    "@nuxt/eslint": "^0.7.6",
+    "@nuxt/ui": "^2.21.0",
     "@pinia/colada": "^0.13.3",
     "@pinia/colada-nuxt": "0.0.4",
     "@pinia/nuxt": "^0.9.0",
+    "@vite-pwa/nuxt": "^0.10.6",
     "canvas-confetti": "^1.9.3",
     "date-fns": "^4.1.0",
-    "drizzle-kit": "^0.30.3",
-    "drizzle-orm": "^0.38.4",
+    "drizzle-orm": "^0.39.1",
+    "eslint": "^9.19.0",
     "h3-zod": "^0.5.3",
     "marked": "^15.0.6",
-    "nuxt": "^3.15.3",
-    "nuxt-auth-utils": "0.5.7",
+    "nuxt": "^3.15.4",
+    "nuxt-auth-utils": "0.5.10",
+    "pg": "^8.13.1",
     "pinia": "^2.3.1",
     "vue": "latest",
     "vue-router": "latest",
     "zod": "^3.24.1"
   },
-  "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a",
   "devDependencies": {
+    "@changesets/cli": "^2.27.12",
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
     "@iconify-json/heroicons": "^1.2.2",
     "@iconify-json/simple-icons": "^1.2.22",
     "@types/canvas-confetti": "^1.9.0",
+    "@types/pg": "^8.11.11",
+    "drizzle-kit": "^0.30.4",
+    "husky": "^9.1.7",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "wrangler": "^3.105.1"
+    "typescript": "^5.7.3"
   }
 }

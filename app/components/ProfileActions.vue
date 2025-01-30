@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const createHabitModal = ref(false);
+const createHabitModal = ref(false)
 </script>
 
 <template>
@@ -8,11 +8,9 @@ const createHabitModal = ref(false);
       <UIcon name="i-heroicons-plus-16-solid" class="h-5 w-5" />
       Create
     </button>
-    <Dropdown />
+    <AppDropdown />
   </div>
-  <UModal
-    v-model="createHabitModal"
-    :ui="{ container: 'items-center', width: 'w-96', background: '', shadow: '', overlay: { base: 'backdrop-blur-2xl', background: 'bg-white/5 dark:bg-black/60' } }">
-    <HabitForm @habitAdded="createHabitModal = false" />
+  <UModal v-model="createHabitModal" :ui="{ container: 'items-center', width: 'w-96', background: '', shadow: '', overlay: { base: 'backdrop-blur-2xl', background: 'bg-white/5 dark:bg-black/60' } }">
+    <HabitForm @habit-added="createHabitModal = false" />
   </UModal>
 </template>

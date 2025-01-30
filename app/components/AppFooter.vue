@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { format } from 'date-fns';
-const config = useRuntimeConfig();
-const currentYear = format(new Date(), 'yyyy');
+import { format } from 'date-fns'
+const config = useRuntimeConfig()
+const currentYear = format(new Date(), 'yyyy')
 </script>
 
 <template>

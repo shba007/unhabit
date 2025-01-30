@@ -1,5 +1,5 @@
 interface Day {
-  date: string;
+  date: string
 }
 
-type Week = Day[];
+type Week = Day[]

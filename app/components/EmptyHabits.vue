@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const createHabitModal = ref(false);
+const createHabitModal = ref(false)
 </script>
 
 <template>
@@ -10,16 +10,14 @@ const createHabitModal = ref(false);
       </div>
     </div>
     <div class="flex flex-col items-center justify-center gap-2 p-6">
-      <button @click="createHabitModal = true" class="button mb-2 bg-green-400 p-2.5 text-green-950 hover:bg-green-300">
+      <button class="button mb-2 bg-sky-400 p-2.5 text-sky-950 hover:bg-sky-300" @click="createHabitModal = true">
         <UIcon name="i-heroicons-plus-16-solid" class="h-6 w-6" />
       </button>
       <div class="font-medium">No habit found</div>
       <div class="text-xs text-neutral-400">Create a new habit to track your progress</div>
     </div>
   </ContentBox>
-  <UModal
-    v-model="createHabitModal"
-    :ui="{ container: 'items-center', width: 'w-96', background: '', shadow: '', overlay: { base: 'backdrop-blur-2xl', background: 'bg-white/5 dark:bg-black/60' } }">
-    <HabitForm @habitAdded="createHabitModal = false" />
+  <UModal v-model="createHabitModal" :ui="{ container: 'items-center', width: 'w-96', background: '', shadow: '', overlay: { base: 'backdrop-blur-2xl', background: 'bg-white/5 dark:bg-black/60' } }">
+    <HabitForm @habit-added="createHabitModal = false" />
   </UModal>
 </template>

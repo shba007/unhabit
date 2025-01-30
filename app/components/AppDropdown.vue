@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const { clear, user } = useUserSession();
-const colorMode = useColorMode();
+const { clear } = useUserSession()
+const colorMode = useColorMode()
 
 const isDarkMode = computed({
   get: () => colorMode.preference === 'dark',
   set: () => (colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'),
-});
+})
 </script>
 
 <template>
@@ -23,12 +23,12 @@ const isDarkMode = computed({
           </div>
         </div>
         <div class="border-b border-white/10"></div>-->
-        <div @click="isDarkMode = !isDarkMode" class="m-1 flex cursor-pointer items-center gap-3 rounded-lg p-2 transition hover:bg-black/30">
+        <div class="m-1 flex cursor-pointer items-center gap-3 rounded-lg p-2 transition hover:bg-black/30" @click="isDarkMode = !isDarkMode">
           <UIcon :name="colorMode.preference === 'dark' || colorMode.preference === 'system' ? 'i-heroicons-moon' : 'i-heroicons-sun'" class="h-5 w-5" />
           <span>Dark mode</span>
         </div>
         <div class="border-b border-white/5"></div>
-        <div @click="clear()" class="m-1 flex cursor-pointer items-center gap-3 rounded-lg p-2 transition hover:bg-black/30">
+        <div class="m-1 flex cursor-pointer items-center gap-3 rounded-lg p-2 transition hover:bg-black/30" @click="clear()">
           <UIcon name="i-heroicons-arrow-right-on-rectangle-20-solid" class="h-5 w-5" />
           <span>Sign out</span>
         </div>

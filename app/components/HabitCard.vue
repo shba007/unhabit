@@ -1,45 +1,45 @@
 <script setup lang="ts">
-import { marked } from 'marked';
-import { isSameDay, parseISO, format } from 'date-fns';
-const queryCache = useQueryCache();
+import { marked } from 'marked'
+import { isSameDay, parseISO, format } from 'date-fns'
+const queryCache = useQueryCache()
 
-defineProps<{ habit: Habit }>();
+defineProps<{ habit: Habit }>()
 
-const renderMarkdown = (text: string) => marked(text);
+const renderMarkdown = (text: string) => marked(text)
 
-const getCompletionRate = (habit: Habit) => Math.round((habit.completeDays.length / 40) * 100);
+const getCompletionRate = (habit: Habit) => Math.round((habit.completeDays.length / 40) * 100)
 
-const openHabitModal = ref(false);
+const openHabitModal = ref(false)
 
 // Delete habit
-const confirmDeleteModal = ref(false);
-const confirmationText = ref('');
+const confirmDeleteModal = ref(false)
+const confirmationText = ref('')
 
-const openDeleteConfirmation = (habit: Habit) => {
-  confirmDeleteModal.value = true;
-};
+const openDeleteConfirmation = () => {
+  confirmDeleteModal.value = true
+}
 
 const closeDeleteConfirmation = () => {
-  confirmationText.value = '';
-  confirmDeleteModal.value = false;
-};
+  confirmationText.value = ''
+  confirmDeleteModal.value = false
+}
 
 const { mutate: deleteHabit } = useMutation({
   mutation: (habit: Habit) => $fetch(`/api/habits/${habit.id}`, { method: 'DELETE' }),
 
   async onSuccess() {
-    await queryCache.invalidateQueries({ key: ['habits'] });
+    await queryCache.invalidateQueries({ key: ['habits'] })
   },
-});
+})
 
 // Edit habit
-const editingHabit = ref<number | null>(null);
-const edit = ref<{ title: string; description: string }>({ title: '', description: '' });
+const editingHabit = ref<number | null>(null)
+const edit = ref<{ title: string; description: string }>({ title: '', description: '' })
 
 const editHabit = (habit: Habit) => {
-  editingHabit.value = habit.id;
-  edit.value = { title: habit.title, description: habit.description || '' };
-};
+  editingHabit.value = habit.id
+  edit.value = { title: habit.title, description: habit.description || '' }
+}
 
 const { mutate: saveHabit } = useMutation({
   mutation: () =>
@@ -52,40 +52,38 @@ const { mutate: saveHabit } = useMutation({
     }),
 
   async onSuccess() {
-    await queryCache.invalidateQueries({ key: ['habits'] });
-    editingHabit.value = null;
+    await queryCache.invalidateQueries({ key: ['habits'] })
+    editingHabit.value = null
   },
-});
+})
 
 const cancelEdit = () => {
-  editingHabit.value = null;
-};
+  editingHabit.value = null
+}
 
-const isTodayCompleted = (habit: Habit) => habit.completeDays.some(day => isSameDay(parseISO(day), new Date()));
+const isTodayCompleted = (habit: Habit) => habit.completeDays.some((day) => isSameDay(parseISO(day), new Date()))
 
 const { mutate: toggleTodayCompletion } = useMutation({
   mutation: (habit: Habit) => {
-    const isCompletedToday = habit.completeDays.some(day => isSameDay(parseISO(day), new Date()));
+    const isCompletedToday = habit.completeDays.some((day) => isSameDay(parseISO(day), new Date()))
 
-    const updatedCompleteDays = isCompletedToday
-      ? habit.completeDays.filter(day => !isSameDay(parseISO(day), new Date()))
-      : [...habit.completeDays, format(new Date(), 'yyyy-MM-dd')];
+    const updatedCompleteDays = isCompletedToday ? habit.completeDays.filter((day) => !isSameDay(parseISO(day), new Date())) : [...habit.completeDays, format(new Date(), 'yyyy-MM-dd')]
 
     return $fetch(`/api/habits/${habit.id}`, {
       method: 'PATCH',
       body: {
         completeDays: updatedCompleteDays,
       },
-    });
+    })
   },
 
   async onSuccess(habit) {
-    await queryCache.invalidateQueries({ key: ['habits'] });
-    if (habit.completeDays.some(day => isSameDay(parseISO(day), new Date()))) {
-      startConfettiAnimation();
+    await queryCache.invalidateQueries({ key: ['habits'] })
+    if (habit.completeDays.some((day) => isSameDay(parseISO(day), new Date()))) {
+      startConfettiAnimation()
     }
   },
-});
+})
 </script>
 
 <template>
@@ -94,11 +92,9 @@ const { mutate: toggleTodayCompletion } = useMutation({
       <div class="text-md font-medium text-white">{{ habit.title }}</div>
       <div class="line-clamp-3 text-xs text-white/70" v-html="renderMarkdown(habit.description || '')"></div>
     </div>
-    <HabitHeatmap :habit="habit" :habitDays="49" />
+    <HabitHeatmap :habit="habit" :habit-days="49" />
   </ContentBox>
-  <UModal
-    v-model="openHabitModal"
-    :ui="{ container: 'items-center', background: '', shadow: '', overlay: { base: 'backdrop-blur-2xl', background: 'bg-white/5 dark:bg-black/60' } }">
+  <UModal v-model="openHabitModal" :ui="{ container: 'items-center', background: '', shadow: '', overlay: { base: 'backdrop-blur-2xl', background: 'bg-white/5 dark:bg-black/60' } }">
     <div class="flex flex-col gap-4">
       <ContentBox class="flex flex-col gap-2.5 bg-white/10 p-2.5 dark:bg-neutral-400/5">
         <div class="flex w-full items-center justify-between gap-2.5 px-0.5 text-white/25 dark:text-white/15">
@@ -124,17 +120,17 @@ const { mutate: toggleTodayCompletion } = useMutation({
             </strong>
           </div>
         </div>
-        <HabitHeatmap :habit="habit" :habitDays="343" />
+        <HabitHeatmap :habit="habit" :habit-days="343" />
       </ContentBox>
       <div class="flex flex-col gap-4 px-3 text-white">
         <div class="flex items-center justify-between gap-3">
-          <UInput v-if="editingHabit === habit.id" :ui="{ wrapper: 'flex-1', rounded: 'rounded-full', size: { sm: 'text-sm font-semibold' } }" v-model="edit.title" />
+          <UInput v-if="editingHabit === habit.id" v-model="edit.title" :ui="{ wrapper: 'flex-1', rounded: 'rounded-full', size: { sm: 'text-sm font-semibold' } }" />
           <div v-else class="text-xl font-semibold">{{ habit.title }}</div>
           <div class="flex items-center gap-3">
             <button
-              @click="toggleTodayCompletion(habit)"
               class="button px-2.5 py-1.5 font-semibold outline-none"
-              :class="isTodayCompleted(habit) ? 'bg-white/10 hover:bg-white/25' : 'bg-green-500 hover:bg-green-400 dark:bg-green-400 dark:text-green-950 dark:hover:bg-green-300'">
+              :class="isTodayCompleted(habit) ? 'bg-white/10 hover:bg-white/25' : 'bg-sky-500 hover:bg-sky-400 dark:bg-sky-400 dark:text-sky-950 dark:hover:bg-sky-300'"
+              @click="toggleTodayCompletion(habit)">
               <UIcon v-if="!isTodayCompleted(habit)" name="i-heroicons-check-16-solid" class="h-5 w-5" />
               {{ isTodayCompleted(habit) ? 'Undo' : 'Complete' }}
             </button>
@@ -145,14 +141,12 @@ const { mutate: toggleTodayCompletion } = useMutation({
               </button>
               <template #panel>
                 <div class="dropdown">
-                  <div @click="editHabit(habit)" class="m-1 flex cursor-pointer items-center gap-3 rounded-lg p-2 transition hover:bg-black/30">
+                  <div class="m-1 flex cursor-pointer items-center gap-3 rounded-lg p-2 transition hover:bg-black/30" @click="editHabit(habit)">
                     <UIcon name="i-heroicons-pencil-square-20-solid" class="h-5 w-5" />
                     <span>Edit</span>
                   </div>
                   <div class="border-b border-white/5"></div>
-                  <div
-                    @click="openDeleteConfirmation(habit)"
-                    class="m-1 flex cursor-pointer items-center gap-3 rounded-lg p-2 transition hover:bg-black/30 dark:text-red-500 dark:hover:bg-red-900/30">
+                  <div class="m-1 flex cursor-pointer items-center gap-3 rounded-lg p-2 transition hover:bg-black/30 dark:text-red-500 dark:hover:bg-red-900/30" @click="openDeleteConfirmation(habit)">
                     <UIcon name="i-heroicons-trash-20-solid" class="h-5 w-5" />
                     <span>Delete</span>
                   </div>
@@ -169,8 +163,8 @@ const { mutate: toggleTodayCompletion } = useMutation({
         <div v-if="editingHabit === habit.id" class="flex items-center justify-between">
           <div></div>
           <div class="flex gap-2">
-            <UButton :ui="{ rounded: 'rounded-full' }" @click="cancelEdit" color="white" variant="link">Cancel</UButton>
-            <UButton :ui="{ rounded: 'rounded-full' }" @click="saveHabit" trailing>Save changes</UButton>
+            <UButton :ui="{ rounded: 'rounded-full' }" color="white" variant="link" @click="cancelEdit">Cancel</UButton>
+            <UButton :ui="{ rounded: 'rounded-full' }" trailing @click="saveHabit">Save changes</UButton>
           </div>
         </div>
       </div>
@@ -192,7 +186,7 @@ const { mutate: toggleTodayCompletion } = useMutation({
             <strong>DELETE</strong>
             in the box below.
           </p>
-          <UInput color="red" v-model="confirmationText" placeholder="Type DELETE here..." />
+          <UInput v-model="confirmationText" color="red" placeholder="Type DELETE here..." />
           <UButton block color="red" :disabled="confirmationText.toLowerCase() !== 'delete'" @click="deleteHabit(habit)">I understand, delete this habit</UButton>
         </div>
       </UCard>

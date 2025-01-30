@@ -1,9 +1,9 @@
-import { eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm'
 
-export default eventHandler(async event => {
-  const { user } = await requireUserSession(event);
+export default eventHandler(async (event) => {
+  const { user } = await requireUserSession(event)
 
-  const habits = await useDB().select().from(tables.habits).where(eq(tables.habits.userId, user.id)).all();
+  const habits = await useDB().select().from(tables.habitsTable).where(eq(tables.habitsTable.userId, user.id))
 
-  return habits as Habit[];
-});
+  return habits
+})
