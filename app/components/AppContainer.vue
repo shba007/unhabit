@@ -1,23 +1,23 @@
 <template>
-  <div class="rmterp">
-    <div class="fzypcq">
+  <div class="wrapper">
+    <div class="container">
       <slot />
     </div>
-    <div class="iPbnzK"></div>
+    <div class="background" />
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.rmterp {
+<style scoped>
+.wrapper {
   @apply relative flex h-dvh items-center justify-center;
 }
 
-.fzypcq {
+.container {
   @apply z-10 mx-auto flex w-full max-w-sm flex-col items-center justify-center gap-4 p-5;
 }
 
-.iPbnzK {
+.background {
   @apply absolute h-dvh w-screen bg-cover bg-center blur transition-opacity duration-300;
-  background-image: url('/bg/bg1.jpg');
+  background-image: url('/images/background.jpg');
 }
 </style>

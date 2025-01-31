@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const title = `UnHabit`
+const description = `A minimalistic habit tracker application to track and manage your daily habits with ease`
+const url = 'https://habit.shirsenud-bairagi.dev'
+
 useHead({
   htmlAttrs: { lang: 'en' },
   link: [
@@ -9,20 +13,27 @@ useHead({
 })
 
 useSeoMeta({
-  title: 'Habit',
-  description: 'A minimalistic habit tracker application to track and manage your daily habits with ease',
-  ogTitle: 'Habit',
-  ogDescription: 'A minimalistic habit tracker application to track and manage your daily habits with ease',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+  ogType: 'profile',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogUrl: url,
+  fbAppId: 966242223397117,
   twitterCard: 'summary_large_image',
-  ogImage: '/preview/landing.png',
-  twitterImage: '/review/landing.png',
-  ogType: 'website',
-  ogUrl: 'https://habit.shirsenud-bairagi.dev',
-  ogSiteName: 'Habit',
-  robots: 'index, follow',
-  keywords: 'habit, tracker, daily, habits, management, tool, minimalistic',
+  colorScheme: 'light dark',
 })
+
+useSchemaOrg([
+  defineWebPage({
+    datePublished: new Date(2025, 0, 30).toISOString(),
+    dateModified: new Date(2025, 0, 31).toISOString(),
+    author: 'Shirsendu Bairagi',
+  }),
+  defineWebSite({
+    url: url,
+    name: title,
+    description: description,
+  }),
+])
 </script>
 
 <template>

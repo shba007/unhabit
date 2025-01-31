@@ -1,3 +1,5 @@
+import { sql } from 'drizzle-orm'
+
 export default defineOAuthGoogleEventHandler({
   config: {},
   async onSuccess(event, { user }) {
@@ -22,6 +24,15 @@ export default defineOAuthGoogleEventHandler({
         email: user.email,
         createdAt: new Date(),
         updatedAt: new Date(),
+      })
+      .onConflictDoUpdate({
+        target: tables.usersTable.id,
+        set: {
+          name: sql`${tables.usersTable.name}`,
+          email: sql`${tables.usersTable.email}`,
+          avatarUrl: user.picture,
+          updatedAt: new Date(),
+        },
       })
       .returning()
 
