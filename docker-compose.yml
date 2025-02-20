@@ -1,7 +1,8 @@
 name: 'unhabit'
 services:
   app:
-    image: ghcr.io/shba007/unhabit:latest
+    # image: ghcr.io/shba007/unhabit:latest
+    build: .
     restart: on-failure:3
     env_file:
       - .env.prod

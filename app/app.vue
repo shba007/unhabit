@@ -5,11 +5,6 @@ const url = 'https://habit.shirsenud-bairagi.dev'
 
 useHead({
   htmlAttrs: { lang: 'en' },
-  link: [
-    { rel: 'icon', href: '/logo.png' },
-    { rel: 'apple-touch-icon', href: '/logo.png' },
-    { rel: 'msapplication-TileImage', href: '/logo.png' },
-  ],
 })
 
 useSeoMeta({
