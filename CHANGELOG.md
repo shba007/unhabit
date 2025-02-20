@@ -1,5 +1,11 @@
 # unhabit
 
+## 1.2.0
+
+### Minor Changes
+
+- 2997e3f: feat: update assets and improve PWA support; remove unused screenshots
+
 ## 1.1.0
 
 ### Minor Changes
